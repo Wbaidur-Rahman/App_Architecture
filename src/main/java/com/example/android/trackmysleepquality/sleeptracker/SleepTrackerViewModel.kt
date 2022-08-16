@@ -27,5 +27,15 @@ import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 class SleepTrackerViewModel(
         val database: SleepDatabaseDao,
         application: Application) : AndroidViewModel(application) {
+                private var viewModeljob = Job()
+
+        override fun onCleared(){
+                super.onCleared()
+                viewModeljob.cancel()
+        }
+
+        private val uiscope = CoroutineScope(Dispatchers.Main + viewModeljob)
+        private var tonight = MutableLiveData<SleepNight?>()
+        private val nights = database.getAllNights()
 }
 
